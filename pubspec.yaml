@@ -26,6 +26,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   fluttertoast: ^2.0.8
   http: ^0.12.0+2
+  dio: ^2.1.16
+  bloc_pattern: ^2.1.0
+  rxdart: ^0.22.2
 
 dev_dependencies:
   flutter_test:
