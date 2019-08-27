@@ -1,5 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
-import 'package:crud_flutter_dio_bloc/shared/repositories/shared/general_api.dart';
+import 'package:crud_flutter_dio_bloc/shared/repositories/shared/repositories/general_api.dart';
 import 'package:crud_flutter_dio_bloc/shared/repositories/shared/models/Post.dart';
 import 'package:rxdart/rxdart.dart';
 
