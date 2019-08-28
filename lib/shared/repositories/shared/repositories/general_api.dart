@@ -5,13 +5,10 @@ import 'package:dio/dio.dart';
 class GeneralApi {
 
   //instancia do Dio
-  Dio dio;
+  final Dio dio;
 
   //Construtor do repositorio
-  GeneralApi(){
-    dio = Dio();
-    dio.options.baseUrl = URL_API;
-  }
+  GeneralApi(this.dio);
 
   //metodo para pegar os posts da aplicação
   Future<List<Post>> getPost() async {
