@@ -1,5 +1,6 @@
 	import 'package:crud_flutter_dio_bloc/shared/repositories/constants.dart';
 	import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 	class CustomDio{
 
@@ -14,7 +15,7 @@
 					return options;
 				},
 				onResponse: (Response response){
-
+					//Fluttertoast.showToast(msg: "DEU TUDO CERTO");
 					return response;
 				},
 				onError: (DioError e){
