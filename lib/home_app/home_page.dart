@@ -11,18 +11,20 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  final bloc = BlocProvider.getBloc<HomeBloc>();
+  final cartBloc = BlocProvider.getBloc<CartBloc>();
+
   @override
   Widget build(BuildContext context) {
-    final bloc = BlocProvider.getBloc<HomeBloc>();
-    final cartBloc = BlocProvider.getBloc<CartBloc>();
 
     return Scaffold(
       appBar: AppBar(
         title: Text("Inject"),
-        leading: StreamBuilder<Object>(
-          stream: cartBloc.saida,
+        leading: StreamBuilder<List<Product>>(
+          stream: cartBloc.cartOut,
           builder: (context, snapshot) {
-            return Text("${snapshot.data}", style: TextStyle(fontSize: 20),);
+            return Text("${snapshot.data.length}", style: TextStyle(fontSize: 20),);
           }
         ),
       ),
@@ -34,13 +36,27 @@ class _HomePageState extends State<HomePage> {
             return Center(
               child: CircularProgressIndicator(),
             );
-          List<Product> posts = snapshot.data;
+          List<Product> product = snapshot.data;
+
           return ListView.separated(
-            itemCount: posts.length,
+            itemCount: product.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(posts[index].nameProduct),
-                onTap: ()=> cartBloc.addCart(),
+              return Container(
+                child: ListTile(
+                  title: Text(product[index].nameProduct,
+                  ),
+                  //onTap: ()=> cartBloc.addCountCart(),
+                  onTap: (){
+
+                    //if (snapshot.data.contains(product[index])) {
+                      cartBloc.adicionaCarrinho(product[index]);
+                    //}
+
+                    snapshot.data[index].isSelected = !snapshot.data[index].isSelected;
+
+                  },
+                  selected: snapshot.data[index].isSelected ? true : false,
+                ),
               );
             },
             separatorBuilder: (context, index) {

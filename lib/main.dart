@@ -17,6 +17,7 @@ void main(){
   var app = MaterialApp(
     //home: Home(),
     home: HomePage(),
+    debugShowCheckedModeBanner: false,
   );
 
   runApp(BlocProvider(

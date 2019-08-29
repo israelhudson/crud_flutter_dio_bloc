@@ -1,23 +1,36 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:crud_flutter_dio_bloc/shared/repositories/shared/models/Cart.dart';
+import 'package:crud_flutter_dio_bloc/shared/repositories/shared/models/Product.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CartBloc extends BlocBase{
 
-  final controlador = BehaviorSubject<int>.seeded(0);
+  final _cart = Cart();
 
-  Observable<int> get saida => controlador.stream;
+  final _listController = BehaviorSubject.seeded(List<Product>());
 
-  Sink<int> get entrada => controlador.sink;
+  Observable<List<Product>> get cartOut => _listController.stream;
 
-  int get valor => controlador.value;
+  Sink<List<Product>> get cartIn => _listController.sink;
 
-  addCart(){
-    entrada.add(valor +1);
+  adicionaCarrinho(Product product){
+    product.isSelected = true;
+    _cart.addCart(product);
+    updateList();
+  }
+
+  removeCarrinho(Product product){
+    _cart.deleteCart(product);
+    updateList();
+  }
+
+  void updateList() {
+    cartIn.add(_cart.products.toList());
   }
 
   @override
   void dispose() {
-    controlador.close();
+    _listController.close();
     super.dispose();
   }
 

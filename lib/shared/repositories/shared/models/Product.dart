@@ -4,15 +4,14 @@ class Product {
   String price;
   String category;
   String thumbnail;
-  String isSelected;
+  bool isSelected = false;
 
   Product(
       {this.id,
         this.nameProduct,
         this.price,
         this.category,
-        this.thumbnail,
-        this.isSelected});
+        this.thumbnail});
 
   Product.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -20,7 +19,6 @@ class Product {
     price = json['price'];
     category = json['category'];
     thumbnail = json['thumbnail'];
-    isSelected = json['isSelected'];
   }
 
   Map<String, dynamic> toJson() {
@@ -30,7 +28,6 @@ class Product {
     data['price'] = this.price;
     data['category'] = this.category;
     data['thumbnail'] = this.thumbnail;
-    data['isSelected'] = this.isSelected;
     return data;
   }
 }

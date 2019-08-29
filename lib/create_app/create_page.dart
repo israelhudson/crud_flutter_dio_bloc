@@ -21,10 +21,8 @@ class _CreatePageState extends State<CreatePage> {
   var cartBloc = BlocProvider.getBloc<CartBloc>();
 
   var formKey = GlobalKey<FormState>();
-
   TextEditingController nomeProdutoController = TextEditingController();
   TextEditingController precoController = TextEditingController();
-  String _textButton = "";
 
   @override
   void dispose() {
@@ -38,23 +36,13 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-//    blocList.listSave.forEach((p){
-//      print(p.nameProduct.toString());
-//    });
-
-    //print(blocList.listSave.length);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastro"),leading: StreamBuilder<Object>(
-          stream: cartBloc.saida,
+      appBar: AppBar(title: Text("Cadastro"),
+        leading: StreamBuilder<List<Product>>(
+          stream: cartBloc.cartOut,
           builder: (context, snapshot) {
-            return Text("${snapshot.data}", style: TextStyle(fontSize: 20),);
+            return Text("${snapshot.data.length}", style: TextStyle(fontSize: 20),);
           }
       ),),
       body: StreamBuilder<int>(
@@ -102,8 +90,7 @@ class _CreatePageState extends State<CreatePage> {
                               nameProduct: "${nomeProdutoController.text}",
                               price: "${precoController.text}",
                               category: "Frutas",
-                              thumbnail: "teste",
-                              isSelected: "true"));
+                              thumbnail: "teste"));
                           nomeProdutoController.text = null;
                           precoController.text = null;
 
@@ -111,44 +98,34 @@ class _CreatePageState extends State<CreatePage> {
 
                       },
                     ),
+                    Divider(height: 20,color: Colors.black,),
                     Container(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: blocList.listaSalvaProdutos.length,
-                        itemBuilder: (context, index) {
-                          final item = blocList.listaSalvaProdutos[index];
-                          return ListTile(
-                            title: Text(item.nameProduct.toString() + "fdfd"),
+                      height: 400,
+                      child: StreamBuilder<List<Product>>(
+                        //stream: bloc.listOut,
+                        stream: cartBloc.cartOut,
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData)
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          List<Product> products = snapshot.data;
+                          return ListView.separated(
+                            itemCount: products.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(products[index].nameProduct),
+                                onTap: ()=> cartBloc.removeCarrinho(products[index]),
+                                selected: products[index].isSelected ? true : false,
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider();
+                            },
                           );
                         },
                       ),
                     ),
-                    Divider(height: 20,color: Colors.black,),
-//                    Container(
-//                      height: 200,
-//                      child: StreamBuilder<List<Product>>(
-//                        //stream: bloc.listOut,
-//                        stream: blocList.listOutProducts,
-//                        builder: (context, snapshot) {
-//                          if (!snapshot.hasData)
-//                            return Center(
-//                              child: CircularProgressIndicator(),
-//                            );
-//                          List<Product> posts = snapshot.data;
-//                          return ListView.separated(
-//                            itemCount: posts.length,
-//                            itemBuilder: (context, index) {
-//                              return ListTile(
-//                                title: Text(posts[index].nameProduct),
-//                              );
-//                            },
-//                            separatorBuilder: (context, index) {
-//                              return Divider();
-//                            },
-//                          );
-//                        },
-//                      ),
-//                    ),
                   ],
                 ),
               ),
