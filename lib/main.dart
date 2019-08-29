@@ -27,7 +27,7 @@ void main(){
     ],
     blocs: [
       Bloc((i) => HomeBloc(i.get<GeneralApi>())),
-      Bloc((i) => CreateBloc(i.get<CreateHepository>())),
+      Bloc((i) => CreateBloc(i.get<CreateHepository>()), singleton: false),
     ],
   ));
 }

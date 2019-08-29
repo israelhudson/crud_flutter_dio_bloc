@@ -84,6 +84,7 @@ class _CreatePageState extends State<CreatePage> {
                               isSelected: "true"));
                           nomeProdutoController.text = null;
                           precoController.text = null;
+
                         }
 
                       },
