@@ -1,4 +1,5 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:crud_flutter_dio_bloc/cart_app/cart_bloc.dart';
 import 'package:crud_flutter_dio_bloc/create_app/create_repository.dart';
 import 'package:crud_flutter_dio_bloc/home_app/home_bloc.dart';
 import 'package:crud_flutter_dio_bloc/home_app/home_page.dart';
@@ -28,6 +29,7 @@ void main(){
     blocs: [
       Bloc((i) => HomeBloc(i.get<GeneralApi>())),
       Bloc((i) => CreateBloc(i.get<CreateHepository>()), singleton: false),
+      Bloc((i) => CartBloc()),
     ],
   ));
 }

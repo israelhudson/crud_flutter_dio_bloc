@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:crud_flutter_dio_bloc/cart_app/cart_bloc.dart';
 import 'package:crud_flutter_dio_bloc/create_app/create_bloc.dart';
+import 'package:crud_flutter_dio_bloc/home_app/home_bloc.dart';
 import 'package:crud_flutter_dio_bloc/shared/repositories/shared/models/Product.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +15,10 @@ class CreatePage extends StatefulWidget {
 class _CreatePageState extends State<CreatePage> {
 
   var bloc = BlocProvider.getBloc<CreateBloc>();
+
+  var blocList = BlocProvider.getBloc<HomeBloc>();
+
+  var cartBloc = BlocProvider.getBloc<CartBloc>();
 
   var formKey = GlobalKey<FormState>();
 
@@ -32,9 +38,25 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+//    blocList.listSave.forEach((p){
+//      print(p.nameProduct.toString());
+//    });
+
+    //print(blocList.listSave.length);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cadastro"),),
+      appBar: AppBar(title: Text("Cadastro"),leading: StreamBuilder<Object>(
+          stream: cartBloc.saida,
+          builder: (context, snapshot) {
+            return Text("${snapshot.data}", style: TextStyle(fontSize: 20),);
+          }
+      ),),
       body: StreamBuilder<int>(
         stream: bloc.responseOut,
         builder: (context, snapshot) {
@@ -88,7 +110,45 @@ class _CreatePageState extends State<CreatePage> {
                         }
 
                       },
-                    )
+                    ),
+                    Container(
+                      height: 200,
+                      child: ListView.builder(
+                        itemCount: blocList.listaSalvaProdutos.length,
+                        itemBuilder: (context, index) {
+                          final item = blocList.listaSalvaProdutos[index];
+                          return ListTile(
+                            title: Text(item.nameProduct.toString() + "fdfd"),
+                          );
+                        },
+                      ),
+                    ),
+                    Divider(height: 20,color: Colors.black,),
+//                    Container(
+//                      height: 200,
+//                      child: StreamBuilder<List<Product>>(
+//                        //stream: bloc.listOut,
+//                        stream: blocList.listOutProducts,
+//                        builder: (context, snapshot) {
+//                          if (!snapshot.hasData)
+//                            return Center(
+//                              child: CircularProgressIndicator(),
+//                            );
+//                          List<Product> posts = snapshot.data;
+//                          return ListView.separated(
+//                            itemCount: posts.length,
+//                            itemBuilder: (context, index) {
+//                              return ListTile(
+//                                title: Text(posts[index].nameProduct),
+//                              );
+//                            },
+//                            separatorBuilder: (context, index) {
+//                              return Divider();
+//                            },
+//                          );
+//                        },
+//                      ),
+//                    ),
                   ],
                 ),
               ),

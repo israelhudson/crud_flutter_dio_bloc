@@ -10,7 +10,7 @@ class HomeBloc extends BlocBase {
 
   HomeBloc(this.api);
 
-  final BehaviorSubject _listController = BehaviorSubject.seeded(true);
+  final BehaviorSubject _listController = BehaviorSubject.seeded(List<Product>());
 
   Sink get listIn => _listController.sink;
 
@@ -18,6 +18,7 @@ class HomeBloc extends BlocBase {
 
   Observable<List<Product>> get listOutProducts => _listController.stream.asyncMap((v)=>api.getProducts());
 
+  List<Product> get listaSalvaProdutos => _listController.value;
 
   @override
   void dispose() {
